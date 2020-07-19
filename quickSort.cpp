@@ -4,7 +4,23 @@
 #include <iostream>
 using namespace std;
 
-int partition(int *arr, int startIndex, int endIndex) {
+int partition_single_side(int *arr, int startIndex, int endIndex) {
+    int pivot = arr[startIndex];
+    int mark = startIndex;
+    for (int i = startIndex + 1; i <= endIndex; i++) {
+        if (arr[i] < pivot) {
+            mark++;
+            int p = arr[mark];
+            arr[mark] = arr[i];
+            arr[i] = p;
+        }
+    }
+    arr[startIndex] = arr[mark];
+    arr[mark] = pivot;
+    return mark;
+}
+
+int partition_double_side(int *arr, int startIndex, int endIndex) {
     int pivot = arr[startIndex];
     int left = startIndex;
     int right = endIndex;
@@ -29,7 +45,7 @@ void quickSort(int *arr, int startIndex, int endIndex) {
     if (startIndex >= endIndex) {
         return;
     }
-    int pivotIndex = partition(arr, startIndex, endIndex);
+    int pivotIndex = partition_single_side(arr, startIndex, endIndex);
     quickSort(arr, startIndex, pivotIndex - 1);
     quickSort(arr, pivotIndex + 1, endIndex);
 }
